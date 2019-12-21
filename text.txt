@@ -1,0 +1,31 @@
+Boosting
+Boosting (originally called hypothesis boosting) refers to any Ensemble method that can combine several weak learners into a strong learner. The general idea of most boosting methods is to train predictors sequentially, each trying to correct its predecessor.
+
+		AdaBoost
+			One way for a new predictor to correct its predecessor is to pay a bit more attention
+			to the training instances that the predecessor underfitted. This results in new predictors
+			focusing more and more on the hard cases. This is the technique used by AdaBoost.
+		Gradient Boosting
+			Another very popular Boosting algorithm is Gradient Boosting.Just like AdaBoost,Gradient Boosting works by sequentially adding predictors to an ensemble, each one correcting its predecessor. However, instead of tweaking the instance weights at every iteration like AdaBoost does, this method tries to fit the new predictor to the residual errors made by the previous predictor.
+
+Stacking
+To train the blender, a common approach is to use a hold-out set.19 Let’s see how it
+works. First, the training set is split in two subsets. The first subset is used to train the
+predictors in the first layer.
+
+Next, the first layer predictors are used to make predictions on the second (held-out)
+set. This ensures that the predictions are “clean,” since the predictors
+never saw these instances during training. Now for each instance in the hold-out set
+there are three predicted values. We can create a new training set using these predicted
+values as input features (which makes this new training set three-dimensional),
+and keeping the target values. The blender is trained on this new training set, so it
+learns to predict the target value given the first layer’s predictions.
+
+It is actually possible to train several different blenders this way (e.g., one using Linear
+Regression, another using Random Forest Regression, and so on): we get a whole
+layer of blenders. The trick is to split the training set into three subsets: the first one is
+used to train the first layer, the second one is used to create the training set used to
+train the second layer (using predictions made by the predictors of the first layer),
+and the third one is used to create the training set to train the third layer (using predictions
+made by the predictors of the second layer). Once this is done, we can make
+a prediction for a new instance by going through each layer sequentially
